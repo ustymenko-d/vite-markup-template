@@ -1,0 +1,109 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+:focus,
+:active {
+	outline: none;
+}
+
+html,
+body {
+	height: 100%;
+	line-height: 1;
+	font-size: 100%;
+	scroll-behavior: smooth;
+}
+
+nav,
+footer,
+header,
+aside {
+	display: block;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea {
+	font: inherit;
+}
+
+input::-ms-clear {
+	display: none;
+}
+
+textarea:not([rows]) {
+	min-height: 10em;
+}
+
+button {
+	cursor: pointer;
+
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	}
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+
+	&:focus,
+	&:active {
+		outline: none;
+	}
+
+	&:focus,
+	&:active,
+	&:visited,
+	&:hover {
+		text-decoration: none;
+	}
+
+	&:not([class]) {
+		text-decoration-skip-ink: auto;
+		color: currentColor;
+	}
+}
+
+ul li {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: inherit;
+	font-weight: 400;
+	text-wrap: balance;
+}
+
+details>summary {
+	list-style: none;
+}
+
+summary::-webkit-details-marker {
+	display: none;
+}
