@@ -8,52 +8,47 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { readFileSync, existsSync } from 'fs'
 
-const htmlIncludePlugin = () => {
-	return {
-		name: 'html-include',
-		transformIndexHtml: {
-			order: 'pre',
-			handler(html) {
-				const xmlIncludeRegex = /<include\s+src=["']([^"']+)["']([^>]*?)\s*\/>/g
+const htmlIncludePlugin = () => ({
+	name: 'html-include',
+	transformIndexHtml: {
+		order: 'pre',
+		handler(html) {
+			const xmlIncludeRegex = /<include\s+src=["']([^"']+)["']([^>]*?)\s*\/>/g
 
-				html = html.replace(xmlIncludeRegex, (match, componentPath, attributes) => {
-					try {
-						let normalizedPath = componentPath.replace(/^components\//, '').replace(/\.html$/, '')
-						const componentFullPath = path.resolve(
-							__dirname,
-							`src/components/${normalizedPath}.html`,
-						)
+			html = html.replace(xmlIncludeRegex, (match, componentPath, attributes) => {
+				try {
+					let normalizedPath = componentPath.replace(/^components\//, '').replace(/\.html$/, '')
+					const componentFullPath = path.resolve(__dirname, `src/components/${normalizedPath}.html`)
 
-						if (!existsSync(componentFullPath)) {
-							console.warn(`Component not found: ${componentPath}`)
-							return ''
-						}
-
-						let componentContent = readFileSync(componentFullPath, 'utf-8')
-
-						if (attributes.trim()) {
-							const attrRegex = /(\w+)=["']([^"']+)["']/g
-							let attrMatch
-							while ((attrMatch = attrRegex.exec(attributes)) !== null) {
-								const key = attrMatch[1]
-								const value = attrMatch[2]
-								const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g')
-								componentContent = componentContent.replace(regex, value)
-							}
-						}
-
-						return componentContent
-					} catch (error) {
-						console.warn(`Error including component ${componentPath}:`, error.message)
+					if (!existsSync(componentFullPath)) {
+						console.warn(`Component not found: ${componentPath}`)
 						return ''
 					}
-				})
 
-				return html
-			},
+					let componentContent = readFileSync(componentFullPath, 'utf-8')
+
+					if (attributes.trim()) {
+						const attrRegex = /(\w+)=["']([^"']+)["']/g
+						let attrMatch
+						while ((attrMatch = attrRegex.exec(attributes)) !== null) {
+							const key = attrMatch[1]
+							const value = attrMatch[2]
+							const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g')
+							componentContent = componentContent.replace(regex, value)
+						}
+					}
+
+					return componentContent
+				} catch (error) {
+					console.warn(`Error including component ${componentPath}:`, error.message)
+					return ''
+				}
+			})
+
+			return html
 		},
-	}
-}
+	},
+})
 
 export default defineConfig({
 	// Set the project root directory (where index.html is located)
