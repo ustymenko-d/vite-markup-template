@@ -8,9 +8,7 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { readFileSync, existsSync } from 'fs'
 
-const rootPath = '/'
-
-function htmlIncludePlugin() {
+const htmlIncludePlugin = () => {
 	return {
 		name: 'html-include',
 		transformIndexHtml: {
@@ -58,11 +56,16 @@ function htmlIncludePlugin() {
 }
 
 export default defineConfig({
+	// Set the project root directory (where index.html is located)
+	root: 'src',
+	// Base public path when served in production
+	base: './',
+
 	plugins: [
 		htmlIncludePlugin(),
 
 		createHtmlPlugin({
-			minify: true,
+			minify: false,
 		}),
 
 		ViteImageOptimizer({
@@ -75,15 +78,9 @@ export default defineConfig({
 					'sortDefsChildren',
 				],
 			},
-			png: {
-				quality: 70,
-			},
-			jpeg: {
-				quality: 70,
-			},
-			jpg: {
-				quality: 70,
-			},
+			png: { quality: 70 },
+			jpeg: { quality: 70 },
+			jpg: { quality: 70 },
 		}),
 
 		{
@@ -94,17 +91,20 @@ export default defineConfig({
 			apply: 'serve',
 		},
 	],
+
 	build: {
+		// Output directory relative to the project root
+		outDir: '../dist',
+		emptyOutDir: true,
 		rollupOptions: {
 			input: Object.fromEntries(
 				glob
-					.sync(['./*.html'])
+					.sync(['./src/*.html'])
 					.map(file => [
-						path.relative(__dirname, file.slice(0, file.length - path.extname(file).length)),
+						path.basename(file, '.html'),
 						fileURLToPath(new URL(file, import.meta.url)),
 					]),
 			),
 		},
 	},
-	base: `${rootPath}`,
 })
