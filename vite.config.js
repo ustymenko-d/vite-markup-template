@@ -1,5 +1,3 @@
-import imagemin from 'imagemin'
-import imageminWebp from 'imagemin-webp'
 import path from 'path'
 import { defineConfig } from 'vite'
 import glob from 'fast-glob'
@@ -73,18 +71,12 @@ export default defineConfig({
 					'sortDefsChildren',
 				],
 			},
-			png: { quality: 70 },
-			jpeg: { quality: 70 },
-			jpg: { quality: 70 },
+			png: { quality: 80 },
+			jpeg: { quality: 80 },
+			jpg: { quality: 80 },
+			webp: { quality: 80 },
+			avif: { quality: 80 },
 		}),
-
-		{
-			...imagemin(['./src/img/**/*.{jpg,png,jpeg}'], {
-				destination: './src/img/webp/',
-				plugins: [imageminWebp({ quality: 70 })],
-			}),
-			apply: 'serve',
-		},
 	],
 
 	build: {

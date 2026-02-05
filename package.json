@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "webp": "node webp.js",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -14,11 +15,11 @@
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "fast-glob": "^3.3.3",
-    "imagemin": "^9.0.1",
-    "imagemin-webp": "^8.0.0",
+    "glob": "^13.0.1",
     "postcss-sort-media-queries": "^5.2.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "sass": "^1.85.1",
+    "sharp": "^0.34.5",
     "svgo": "^4.0.0",
     "vite": "^6.2.1",
     "vite-plugin-compression": "^0.5.1",
